@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "270033537024",
+    "firebase_url": "https://onesignal-flutter-b8faa-default-rtdb.firebaseio.com",
+    "project_id": "onesignal-flutter-b8faa",
+    "storage_bucket": "onesignal-flutter-b8faa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270033537024:android:9c7be36927539ba3f070e5",
+        "android_client_info": {
+          "package_name": "com.example.one_signal_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270033537024-04r5bn7aj5mfr3foc4v203pubkdib8d8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.one_signal_flutter",
+            "certificate_hash": "8a8199c9457f6ac604fa28914abf8005dcaf2f3b"
+          }
+        },
+        {
+          "client_id": "270033537024-3rp027kban8ho559g6covt9qni0og396.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCsHcLsfKREyvagKuXAZQmkR5i_cJOunk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270033537024-3rp027kban8ho559g6covt9qni0og396.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
