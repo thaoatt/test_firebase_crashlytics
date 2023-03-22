@@ -61,9 +61,9 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: const Icon(Icons.exit_to_app),
             tooltip: 'Sign out', onPressed: () {
               try{
-                testList.add(int.parse('abc'));
+                print('${testList[30]}');
               }catch(e, stack){
-                FirebaseCrashlytics.instance.recordError(e, stack, fatal: true);
+                FirebaseCrashlytics.instance.recordError(Exception('Crassh rồi'), stack, fatal: true);
               }
           },
           ),
@@ -150,7 +150,13 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            onPressed: sendMessage,
+            onPressed: (){
+              try{
+                testList.add(int.parse('ThaoATT'));
+              }catch(e, stack){
+                FirebaseCrashlytics.instance.recordError(e, stack, fatal: true);
+              }
+            },
             icon: const Icon(Icons.send),
             color: Colors.blue,
           ),
