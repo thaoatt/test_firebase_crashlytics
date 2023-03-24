@@ -59,6 +59,12 @@ dependencies:
   bloc: ^8.1.1
   rxdart: ^0.27.7
   pull_to_refresh: ^2.0.0
+  dio: ^5.0.3
+#  dio_http_cache: 0.3.0
+  formz: ^0.6.0
+  g_json: ^4.1.0
+
+  audioplayers: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -113,5 +119,6 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
-    - asset/image/
-    - asset/icon/
+    - assets/image/
+    - assets/icon/
+    - assets/

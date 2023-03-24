@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,6 @@ import 'package:one_signal_flutter/library/library_screen.dart';
 import 'package:one_signal_flutter/play_music_widget/bloc/play_music_widget_bloc.dart';
 import 'package:one_signal_flutter/utils/color_const.dart';
 
-import '../play_music_widget/play_music_widget.dart';
 import '../utils/image_const.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -34,6 +34,10 @@ class DashboardScreenForm extends StatefulWidget {
 class _DashboardScreenFormState extends State<DashboardScreenForm> {
   int _currentPage = 0;
   bool isClickPlayButton = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+  final AudioPlayer audioPlayer = AudioPlayer();
+  String url = 'http://api.mp3.zing.vn/api/streaming/audio/Z6708WAZ/320';
 
   List<Widget> dashboardScreens = [
     const HomeScreen(),
@@ -44,6 +48,38 @@ class _DashboardScreenFormState extends State<DashboardScreenForm> {
   void setCurrentPage(int currentPage) {
     setState(() {
       _currentPage = currentPage;
+    });
+  }
+
+  Future<void> setAudio() async{
+    // final player = AudioCache(prefix: 'assets/');
+    // audioPlayer.play(AssetSource('ditto_new_jeans.mp3'));
+    // final urlPath = await player.load('ditto_new_jeans.mp3');
+    // audioPlayer.setReleaseMode(ReleaseMode.loop);
+    // String url = '';
+    // audioPlayer.setSourceUrl(urlPath.path);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        // isClickPlayButton = state == PlayerState.playing;
+      });
+    });
+
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
     });
   }
 
@@ -127,19 +163,27 @@ class _DashboardScreenFormState extends State<DashboardScreenForm> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
+                                onTap: () async{
                                   setState(() {
                                     isClickPlayButton = !isClickPlayButton;
+                                    if(!isClickPlayButton){
+                                      audioPlayer.pause();
+                                    }else{
+                                      audioPlayer.play(UrlSource(url));
+                                      // audioPlayer.setSourceUrl(url);
+                                      // audioPlayer.release();
+                                    }
                                   });
                                 },
                                 child: Icon(
-                                    isClickPlayButton?Icons.play_arrow:Icons.pause,
+                                    !isClickPlayButton?Icons.play_arrow:Icons.pause,
                                     color: Colors.white,
                                     size: 30
                                 ),
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () async{
+                                },
                                 child: const Icon(
                                   Icons.skip_next,
                                   color: Colors.white,

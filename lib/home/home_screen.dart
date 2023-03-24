@@ -120,7 +120,8 @@ class _HomeScreenFormState extends State<HomeScreenForm> {
                   SizedBox(
                       child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: 10,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 30,
                           itemBuilder: (context, position) {
                             return const MusicItemForm();
                           }))
