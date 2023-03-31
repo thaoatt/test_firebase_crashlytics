@@ -1,11 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_signal_flutter/home/bloc/home_bloc.dart';
 import 'package:one_signal_flutter/home/item_music.dart';
 import 'package:one_signal_flutter/utils/color_const.dart';
+import 'package:one_signal_flutter/utils/image_const.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,32 +32,45 @@ class HomeScreenForm extends StatefulWidget {
 
 class _HomeScreenFormState extends State<HomeScreenForm> {
   final PageController _pageController = PageController();
+  static const platform = MethodChannel('getSongChannel');
+  final String _batteryLevel = 'Unknown battery level';
+  Future<void> _getBatteryLevel() async{
+    String battery;
+    try{
+      final result = await platform.invokeListMethod('getBattery');
+      battery = 'Battery result: $result';
+    }on PlatformException catch(e){
+      battery = 'Get failed: ${e.message}';
+    }
+
+  }
   int currentPage = 0;
+  List<String> images = [
+    IMAGE_CONST.img_test.path,
+    IMAGE_CONST.img_jisoo.path,
+    IMAGE_CONST.img_jennie.path,
+    IMAGE_CONST.img_rose.path,
+    IMAGE_CONST.img_lisa.path,
+  ];
 
   @override
   void initState() {
     super.initState();
-    _getSongs();
+    // _getSongs();
   }
 
-  Future<void> _getSongs() async{
-    Directory dir = Directory('/storage/emulated/0/');
-    String mp3Path = dir.toString();
-    print('MP3 path: $mp3Path');
-    List<FileSystemEntity> _files;
-    List<FileSystemEntity> _songs = [];
-    _files = dir.listSync(recursive: true, followLinks: false);
-    for(FileSystemEntity entity in _files) {
-      String path = entity.path;
-      if(path.endsWith('.mp3'))
-        _songs.add(entity);
-    }
-    print('List song: $_songs');
-    print(_songs.length);
+  Future<void> createFolderInAppDocDir() async {
+
+  }
+  Future<void> _getSongs() async {
+
   }
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print('------> $_batteryLevel');
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -70,14 +87,18 @@ class _HomeScreenFormState extends State<HomeScreenForm> {
                 },
                 itemCount: 5,
                 itemBuilder: (context, position) {
+                  var imagePath = images[position];
                   return Container(
                     margin: const EdgeInsets.only(right: 10),
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),
-                        color: Colors.orange),
-                    child: Text('Position ${position + 1}'),
+                      image: DecorationImage(
+                        image: AssetImage(imagePath),
+                        fit: BoxFit.cover
+                      )
+                    ),
                   );
                 },
               ),

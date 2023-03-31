@@ -45,7 +45,7 @@ class _MusicItemFormState extends State<MusicItemForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     Text(
-                      'Music\'s name name name name',
+                      'Music\'s name name ',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

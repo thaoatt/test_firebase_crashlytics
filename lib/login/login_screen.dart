@@ -26,6 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
               margin: EdgeInsets.only(bottom: 20, left: 30, right: 30),
               child: MaterialButton(
                 onPressed: () async{
+                  // await signInWithGoogle().then((value) => print('Login google result: ${value.user}'));
                   Navigator.pushNamedAndRemoveUntil(context, AppRouter.DASHBOARD_SCREEN, (route) => false);
                   // await signInWithGoogle().then((value) => print('Login google result: ${value.user}'));
                   // await signInWithGoogle().whenComplete(() =>  print('Login google success'));

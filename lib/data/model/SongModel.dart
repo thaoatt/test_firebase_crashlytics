@@ -1,5 +1,5 @@
 
-class SongModel {
+class SongModels {
   String id;
   String nameSong;
   String title;
@@ -23,7 +23,7 @@ class SongModel {
   int order;
   Album album;
 
-  SongModel(
+  SongModels(
       {required this.id,
       required this.nameSong,
       required this.title,

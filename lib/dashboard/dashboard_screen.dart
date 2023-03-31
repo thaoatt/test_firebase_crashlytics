@@ -1,8 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:one_signal_flutter/account/account_screen.dart';
+import 'package:one_signal_flutter/app_router.dart';
 import 'package:one_signal_flutter/dashboard/bloc/dashboard_bloc.dart';
 import 'package:one_signal_flutter/dashboard/dashboad_header.dart';
 import 'package:one_signal_flutter/home/home_screen.dart';
@@ -38,7 +40,17 @@ class _DashboardScreenFormState extends State<DashboardScreenForm> {
   Duration position = Duration.zero;
   final AudioPlayer audioPlayer = AudioPlayer();
   String url = 'http://api.mp3.zing.vn/api/streaming/audio/Z6708WAZ/320';
+  static const methodChannelName = "demoChannel";
+  var methodChannel = const MethodChannel(methodChannelName);
 
+  Future<void> callFromNative() async{
+    try{
+      var data = await methodChannel.invokeMethod('callMethod');
+      print('Call message result: $data');
+    }on PlatformException catch(e){
+      print('Thaooo: ${e.message}');
+    }
+  }
   List<Widget> dashboardScreens = [
     const HomeScreen(),
     const LibraryScreen(),
@@ -64,6 +76,7 @@ class _DashboardScreenFormState extends State<DashboardScreenForm> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    callFromNative();
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
         // isClickPlayButton = state == PlayerState.playing;
@@ -94,107 +107,112 @@ class _DashboardScreenFormState extends State<DashboardScreenForm> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Container(
-                height: 60,
-                color: COLOR_CONST.blueLightMain,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 0,
-                        top: 4,
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          decoration: const BoxDecoration(
-                              color: Colors.transparent,
-                              shape: BoxShape.circle),
-                          child: ClipOval(
-                            child: SizedBox.fromSize(
-                              size: const Size.fromRadius(20), // Image radius
-                              child: Image.asset(
-                                IMAGE_CONST.img_test.path,
-                                fit: BoxFit.cover,
+              child: InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, AppRouter.PLAY_MUSIC_DETAIL_DASHBOARD_SCREEN);
+                },
+                child: Container(
+                  height: 60,
+                  color: COLOR_CONST.blueLightMain,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          top: 4,
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            decoration: const BoxDecoration(
+                                color: Colors.transparent,
+                                shape: BoxShape.circle),
+                            child: ClipOval(
+                              child: SizedBox.fromSize(
+                                size: const Size.fromRadius(20), // Image radius
+                                child: Image.asset(
+                                  IMAGE_CONST.img_test.path,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        left: 50,
-                        top: 4,
-                        right: 80,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Music\'s name name name name name',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Music\'s name',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style:
-                              TextStyle(color: Colors.white, fontSize: 14),
-                            )
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        right: -15,
-                        top: 10,
-                        child: Container(
-                          width: 100,
-                          child: Row(
+                        Positioned(
+                          left: 50,
+                          top: 4,
+                          right: 80,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.skip_previous_sharp,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
+                            children: const [
+                              Text(
+                                'Music\'s name name name name name',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              InkWell(
-                                onTap: () async{
-                                  setState(() {
-                                    isClickPlayButton = !isClickPlayButton;
-                                    if(!isClickPlayButton){
-                                      audioPlayer.pause();
-                                    }else{
-                                      audioPlayer.play(UrlSource(url));
-                                      // audioPlayer.setSourceUrl(url);
-                                      // audioPlayer.release();
-                                    }
-                                  });
-                                },
-                                child: Icon(
-                                    !isClickPlayButton?Icons.play_arrow:Icons.pause,
-                                    color: Colors.white,
-                                    size: 30
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () async{
-                                },
-                                child: const Icon(
-                                  Icons.skip_next,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ),
+                              Text(
+                                'Music\'s name',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style:
+                                TextStyle(color: Colors.white, fontSize: 14),
+                              )
                             ],
                           ),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          right: -15,
+                          top: 10,
+                          child: Container(
+                            width: 100,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    Icons.skip_previous_sharp,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () async{
+                                    setState(() {
+                                      isClickPlayButton = !isClickPlayButton;
+                                      if(!isClickPlayButton){
+                                        audioPlayer.pause();
+                                      }else{
+                                        audioPlayer.play(UrlSource(url));
+                                        // audioPlayer.setSourceUrl(url);
+                                        // audioPlayer.release();
+                                      }
+                                    });
+                                  },
+                                  child: Icon(
+                                      !isClickPlayButton?Icons.play_arrow:Icons.pause,
+                                      color: Colors.white,
+                                      size: 30
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () async{
+                                  },
+                                  child: const Icon(
+                                    Icons.skip_next,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ))
