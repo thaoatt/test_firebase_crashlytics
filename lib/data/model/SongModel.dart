@@ -70,6 +70,7 @@ class Album {
   bool? isOffical;
   String artistName;
   List<Artist> artists;
+  String? text;
 
   Album(
       {required this.id,
@@ -78,5 +79,6 @@ class Album {
       required this.name,
       this.isOffical,
       required this.artistName,
-      required this.artists});
+      required this.artists,
+       this.text});
 }
