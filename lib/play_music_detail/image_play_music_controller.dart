@@ -27,6 +27,7 @@ class PlayMusicController extends GetxController with GetSingleTickerProviderSta
       isAnimating.value = true;
       animationController.forward();
       animationController.repeat();
+      ///
     }
   }
 }
